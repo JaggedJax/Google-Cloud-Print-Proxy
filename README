@@ -14,7 +14,8 @@ http://code.google.com/p/xmpphp/
 Used by CIOCloudPrintXMPP.php which looks for it in ./XMPPHP/. Remove the
 'require_once' at the top of the file if not needed.
 
-CIOPrinting is an optional script for sending documents(including PDF) to any local printer. Not tested with Linux yet, but it *should* work...
+CIOPrinting is an optional JAVA script for sending documents(including PDF) to any local printer. Not tested with Linux yet, but it *should* work...
+	PDF Printing uses the PDF-Renderer library: http://java.net/projects/pdf-renderer
 
 The ./drivers directory contains sample ppd files for both a standard 8.5x11 and a thermal label printer.
 

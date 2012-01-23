@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>CIO Cloud Print Readme</title>
+		<meta name="author" content="williamw" />
+		<link rel="stylesheet" type="text/css" media="screen" href="css/general.css" />
+	</head>
+	<body>
+
+		<div id="page-top"><div id="pageToc"><div class="pageToc"><h5>Table of contents</h5><ol style="list-style-type:none; margin-left:0px; padding-left:0px;"><li><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><span>1.1.</span> <a href="#Including_CIOCloudPrint" rel="internal">Including CIOCloudPrint</a></li><li><span>1.2.</span> <a href="#Return_Values" rel="internal">Return Values</a></li></ol></li><li><span>2.</span> <a href="#Cloud_Print_Functions" rel="internal">Cloud Print Functions</a><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><span>2.1.</span> <a href="#General_Functions" rel="internal">General Functions</a><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><span>2.1.1.</span> <a href="#authenticate" rel="internal">authenticate</a></li><li><span>2.1.2.</span> <a href="#deauthenticate" rel="internal">deauthenticate</a></li></ol></li><li><span>2.2.</span> <a href="#Print_Job_Functions" rel="internal">Print Job Functions</a></li><li><span>2.3.</span> <a href="#Printer_Functions" rel="internal">Printer Functions</a></li></ol></li><li><span>3.</span> <a href="#Use_Cases" rel="internal">Use Cases</a><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><span>3.1.1.</span> <a href="#Use_Case_1.3a.c2.a0Submiting_a_job" rel="internal">Use Case 1:&nbsp;Submiting a job</a></li><li><span>3.1.2.</span> <a href="#Use_Case_2.3a_Printing_from_a_virtual_printer" rel="internal">Use Case 2: Printing from a virtual printer</a></li></ol></li></ol></li></ol></div></div><div class="pageText" id="pageText"><p><div class="wiki-toc"><ol style="list-style-type:none; margin-left:0px; padding-left:0px;"><li><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><span>1.1.</span> <a href="#Including_CIOCloudPrint" rel="internal">Including CIOCloudPrint</a></li><li><span>1.2.</span> <a href="#Return_Values" rel="internal">Return Values</a></li></ol></li><li><span>2.</span> <a href="#Cloud_Print_Functions" rel="internal">Cloud Print Functions</a><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><span>2.1.</span> <a href="#General_Functions" rel="internal">General Functions</a><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><span>2.1.1.</span> <a href="#authenticate" rel="internal">authenticate</a></li><li><span>2.1.2.</span> <a href="#deauthenticate" rel="internal">deauthenticate</a></li></ol></li><li><span>2.2.</span> <a href="#Print_Job_Functions" rel="internal">Print Job Functions</a></li><li><span>2.3.</span> <a href="#Printer_Functions" rel="internal">Printer Functions</a></li></ol></li><li><span>3.</span> <a href="#Use_Cases" rel="internal">Use Cases</a><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><span>3.1.1.</span> <a href="#Use_Case_1.3a.c2.a0Submiting_a_job" rel="internal">Use Case 1:&nbsp;Submiting a job</a></li><li><span>3.1.2.</span> <a href="#Use_Case_2.3a_Printing_from_a_virtual_printer" rel="internal">Use Case 2: Printing from a virtual printer</a></li></ol></li></ol></li></ol></div></p>
+		<div id="section_1"><span id="Including_CIOCloudPrint"></span><h3 class="editable">Including CIOCloudPrint</h3>
+		<p>To use the Cloud Print object simply include/require&nbsp;<em>CIOCloudPrint.php</em>. If you use a function that requires local printing, it will attempt to include&nbsp;<em>./CIOPrinting/CIOPrintFile.php</em>&nbsp;automatically and return&nbsp;<em>false</em>&nbsp;if not found.</p>
+		<p>CIOCloudPrintXMPPService needs to be launched from the command line or a cron job. Since it runs indefinitely it cannot be run via an http request or it will timeout. Simply run '<em>php CIOCloudPrintXMPPService.php'.</em>&nbsp;It will automatically look in the same directory and include&nbsp;CIOCloudPrint.</p>
+		</div><div id="section_2"><span id="Return_Values"></span><h3 class="editable">Return Values</h3>
+		<p>All functions will return&nbsp;<em>false</em>&nbsp;on an error. An error message is set which you can check with&nbsp;<em>$cp-&gt;errorMessage</em>&nbsp;(assuming your CIOCloudPrint object is in $cp).</p>
+		<p>Check return type using type&nbsp;equivalence ($result === false &lt;or&gt; $result !== true). Alternitavely you can check if&nbsp;<em>$cp-&gt;errorMessage</em>&nbsp;has any value as it will be an empty string if there is no error.</p><div id="section_3"><span id="Cloud_Print_Functions"></span><h2 class="editable">Cloud Print Functions</h2>
+		<div id="section_4"><span id="General_Functions"></span><h3 class="editable">General Functions</h3>
+		<div id="section_5"><span id="authenticate"></span><h4 class="editable">authenticate</h4>
+		<p>Login to Google Cloud Print with a Gmail account.</p>
+		<p>authenticate(String $username, String $password)</p>
+		<dl> <dt><u><em>username</em></u></dt> <dd>username of Google Account</dd> <dt><u><em>password</em></u></dt> <dd>password for Google Account</dd>
+		</dl>
+		<p><strong>Returns</strong>: boolean result</p>
+		<hr />
+		</div><div id="section_6"><span id="deauthenticate"></span><h4 class="editable">deauthenticate</h4>
+		<p>Logout of Google Cloud Print.</p>
+		<p>deauthenticate()</p>
+		<p><strong>Returns</strong>: no return value</p>
+		<hr />
+		</div></div><div id="section_7"><span id="Print_Job_Functions"></span><h3 class="editable"><a title="Print Job Functions" rel="internal" href="Print_Job_Functions.html">Print Job Functions</a></h3>
+		</div><div id="section_8"><span id="Printer_Functions"></span><h3 class="editable"><a title="Printer Functions" rel="internal" href="Printer_Functions.html">Printer Functions</a></h3></div></div><div id="section_9"><span id="Use_Cases"></span><h2 class="editable">Use Cases</h2>
+		<div id="section_10"><span id="Use_Case_1.3a.c2.a0Submiting_a_job"></span><h4 class="editable">Use Case 1:&nbsp;Submiting a job</h4>
+		<p>
+		
+		          <pre name="code" class="php">$cp = new CIOCloudPrint();
+		$cp-&gt;authenticate(&quot;username&quot;, &quot;password&quot;);
+		$cloudPrinters = $cp-&gt;getPrinterList();
+		// Submit a label to a physical printer
+		// Portrait, no margins, paper size 4x6.5 in
+		$cp-&gt;submitJob(&quot;\www\cioremote\label_010203000002208900_1.png&quot;,
+			$cloudPrinters[1]['id'], &quot;PORTRAIT&quot;, 0, 4, 6.5, &quot;Optional String Tag&quot;); </pre>
+		
+		        </p>
+		</div><div id="section_11"><span id="Use_Case_2.3a_Printing_from_a_virtual_printer"></span><h4 class="editable">Use Case 2: Printing from a virtual printer</h4>
+		<p>If the cloud printer's name you are fetching a job from doesn't match a physical printer on the server where you are actually printing, you must also specify a physical printer or the printing will fail.</p>
+		<p>
+		
+		          <pre name="code" class="php">$cp = new CIOCloudPrint();
+		$cp-&gt;authenticate(&quot;username&quot;, &quot;password&quot;);
+		$cloudPrinters = $cp-&gt;getPrinterList();
+		// Arguments are: Virtual printer id, physical printer name, optional printing arguments (not used here)
+		$cp-&gt;printNextFile($cloudPrinters[3]['id'], &quot;Zebra LP2844&quot;);</pre>
+	
+	    </p></div></div></div></div></div>
+	</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Print_Job_Functions</title>
+		<meta name="author" content="williamw" />
+		<link rel="stylesheet" type="text/css" media="screen" href="css/general.css" />
+	</head>
+	<body>
+		
+		<div id="page-top"><div id="pageToc"><div class="pageToc"><h5>Table of contents</h5><ol style="list-style-type:none; margin-left:0px; padding-left:0px;"><li><span>1.</span> <a href="#Print_Job_Functions" rel="internal">Print Job Functions</a><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><span>1.1.</span> <a href="#listJobs" rel="internal">listJobs</a></li><li><span>1.2.</span> <a href="#getQueuedJobsList" rel="internal">getQueuedJobsList</a></li><li><span>1.3.</span> <a href="#getJob" rel="internal">getJob</a></li><li><span>1.4.</span> <a href="#submitJob" rel="internal">submitJob</a></li><li><span>1.5.</span> <a href="#deleteJob" rel="internal">deleteJob</a></li><li><span>1.6.</span> <a href="#setJobStatus" rel="internal">setJobStatus</a></li></ol></li></ol></div></div><div class="pageText" id="pageText"><div id="section_1"><span id="Print_Job_Functions"></span><h3 class="editable">Print Job Functions</h3>
+		<p><div class="wiki-toc"><ol style="list-style-type:none; margin-left:0px; padding-left:0px;"><li><span>1.</span> <a href="#Print_Job_Functions" rel="internal">Print Job Functions</a><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><span>1.1.</span> <a href="#listJobs" rel="internal">listJobs</a></li><li><span>1.2.</span> <a href="#getQueuedJobsList" rel="internal">getQueuedJobsList</a></li><li><span>1.3.</span> <a href="#getJob" rel="internal">getJob</a></li><li><span>1.4.</span> <a href="#submitJob" rel="internal">submitJob</a></li><li><span>1.5.</span> <a href="#deleteJob" rel="internal">deleteJob</a></li><li><span>1.6.</span> <a href="#setJobStatus" rel="internal">setJobStatus</a></li></ol></li></ol></div></p>
+		<div id="section_2"><span id="listJobs"></span><h4 class="editable"><span class="Apple-style-span" style="font-size: 16px; ">listJobs</span></h4>
+		<p>Get all submitted jobs for specified printer. Jobs of all status will be returned as long as they have not been deleted. If no printer specified, jobs from all printers are returned.</p>
+		<p>listJobs(String $printerID)</p>
+		<dl> <dt><u><em>printerID (optional)</em></u></dt> <dd>ID of printer</dd>
+		</dl>
+		<p><strong>Returns</strong>: Array of jobs with the following values</p>
+		<ul> <li>id <ul> <li>id of print job</li> </ul> </li> <li>printerid <ul> <li>id of printer this belong to</li> </ul> </li> <li>title <ul> <li>name of file</li> </ul> </li> <li>contentType <ul> <li>Curent Mime type of job on the cloud</li> </ul> </li> <li>fileUrl <ul> <li>Location to pickup file</li> </ul> </li> <li>ticketUrl <ul> <li>Location of print specification file (XPS or PPD)</li> </ul> </li> <li>createTime <ul> <li>Unix timestamp when job was created</li> </ul> </li> <li>updatedTime <ul> <li>Unix timestamp when job was last updated</li> </ul> </li> <li>status <ul> <li>Current job status (one of: QUEUED, IN_PROGRESS, DONE, ERROR)</li> </ul> </li> <li>errorCode <ul> <li>NULL unless status is ERROR</li> </ul> </li> <li>message <ul> <li>NULL unless status is ERROR</li> </ul> </li> <li>numberOfPages <ul> <li>Expected length of job</li> </ul> </li> <li>orientation <ul> <li>Orientation for printer to print (one of: PORTRAIT, LANDSCAPE). Default if none specified: PORTRAIT</li> </ul> </li> <li>sides <ul> <li>Sides of paper to print job on (one of: ONE_SIDED, DUPLEX, TUMBLE). Default if none specified: ONE_SIDED</li> </ul> </li> <li>margin <ul> <li>Margins to put at edge of paper when printing (in inches)</li> </ul> </li> <li>width <ul> <li>Width of printer's paper (in inches)</li> </ul> </li> <li>height <ul> <li>Height of printer's paper (in inches)</li> </ul> </li> <li>acceptType <ul> <li>Mime type the job will be sent to printer as</li> </ul> </li> <li>tag <ul> <li>User specified tag. NULL if none set</li> </ul> </li> <li>gTag <ul> <li>Tag set by Google</li> </ul> </li>
+		</ul>
+		<hr /></div><div id="section_3"><span id="getQueuedJobsList"></span><h4 class="editable">getQueuedJobsList</h4>
+		<p>Get an array of queued jobs for specified printer, or all printers if no id.</p>
+		<p>getQueuedJobsList(String $printerID)</p>
+		<dl> <dt><u><em>printerID (optional)</em></u></dt> <dd>ID of printer</dd>
+		</dl>
+		<p><strong>Returns</strong>: Array of jobs</p>
+		<p>See return value above from function listJobs() for format of the job array.</p>
+		<hr />
+		</div><div id="section_4"><span id="getJob"></span><h4 class="editable">getJob</h4>
+		<p>Get details for the specified job</p>
+		<p>getJob(String $jobID)</p>
+		<dl> <dt><u><em>jobID</em></u></dt> <dd>ID of job to get info for</dd>
+		</dl>
+		<p><strong>Returns</strong>: A single job's array of details or false if no job found. See return value above from function listJobs() for format of job array.</p>
+		<hr /></div><div id="section_5"><span id="submitJob"></span><h4 class="editable">submitJob</h4>
+		<p>Submit a file to the specified printer. Optionally specify printing options for the other end.</p>
+		<p>submitJob(String $filePath, String $printerID [, String $orientation<span class="Apple-style-span" style="line-height: normal; ">&nbsp;[, String $sides</span>&nbsp;[, int $margin [, int $width [, int $height [, String $acceptType [, String $jobTag]]]]]])</p>
+		<dl> <dt><u><em>filePath</em></u></dt> <dd>Full or relative path to file (Full preferred)</dd> <dt><u><em>printerID</em></u></dt> <dd>ID of printer to submit this job to</dd> <dt><u><em>orientation (optional)</em></u></dt> <dd>Accepts PORTRAIT or LANDSCAPE. Defaults to PORTRAIT.</dd> <dt><u><em>sides (optional)</em></u></dt> <dd>Accepts ONE_SIDED, DUPLEX, or TUMBLE (sideways duplex). Defaults to ONE_SIDED.</dd> <dt><u><em>margin (optional)</em></u></dt> <dd>Size in inches of margins when printing (.5 for Letter sized paper, 0 for labels). Defaults to 0.</dd> <dt><u><em>width (optional)</em></u></dt> <dd>Width in inches of paper when printing.</dd> <dt><u><em>height (optional)</em></u></dt> <dd>Height in inches of paper when printing.</dd> <dt><u><em>acceptType (optional)</em></u></dt> <dd>Mime type to request and print file in. If none set here or during printNextFile(), document will be converted to PDF.</dd> <dt><u><em>jobTag (optional)</em></u></dt> <dd>Optional String to send info or mark file for later. Not used internally. No commas (',') allowed in string.</dd>
+		</dl>
+		<p>orientation, margin, width, height, and acceptType can all be overwritten on the server end when downloading jobs. Any options specified at download/print time overwrite these. They can be specified here because it is often easier than guessing at print time.</p>
+		<p><strong>Returns</strong>: boolean result</p>
+		<hr />
+		</div><div id="section_6"><span id="deleteJob"></span><h4 class="editable">deleteJob</h4>
+		<p>Delete a job from the cloud.</p>
+		<p>deletejob(String $jobID)</p>
+		<dl> <dt><u><em>jobID</em></u></dt> <dd>ID of the job to remove from cloud</dd>
+		</dl>
+		<p><strong>Returns</strong>: boolean result</p>
+		<hr />
+		</div><div id="section_7"><span id="setJobStatus"></span><h4 class="editable">setJobStatus</h4>
+		<p>Set the printing status of the specified job</p>
+		<p>setJobStatus(String $jobID, String $status [, String $code [, String $message]])</p>
+		<dl> <dt><u><em>jobID</em></u></dt> <dd>ID of the job to update</dd> <dt><u><em>status</em></u></dt> <dd>The new status. Must be one of: QUEUED, IN_PROGRESS, DONE, ERROR</dd> <dt><u><em>code (only for status ERROR)</em></u></dt> <dd>System or OS code from the error</dd> <dt><u><em>message (only for status ERROR)</em></u></dt> <dd>System or OS message from the error</dd>
+		</dl>
+		<p>Status of jobs and meanings:</p>
+		<ul> <li>QUEUED: Job just added and has not yet been downloaded</li> <li>IN_PROGRESS: Job downloaded and has been added to native physical printer</li> <li>DONE: Job printed successfully</li> <li>ERROR: Job can not be printed due to an error</li>
+		</ul>
+		<p>Job status is automatically updated by printing functions such as printNextFile() and printAllFiles().</p>
+		<p><strong>Returns</strong>: boolean result</p></div></div></div></div>	
+		
+	</body>
+</html>

@@ -1,0 +1,454 @@
+*PPD-Adobe: "4.3"
+*% PPD file for ZPL Label Printer with CUPS.
+*% Originally mangled by the CUPS PPD Compiler v1.2.4. as zebra.ppd
+*% Copyright 2007 by Apple Inc.
+*% Copyright 1997-2007 by Easy Software Products.
+*% Modified 2008 DMc @ McPond to get working on TLP2844Z and 101.6mm x 101.6mm labels
+*% Removed all other page/paper/image sizes
+*% 
+*% These coded instructions, statements, and computer programs are the
+*% property of Apple Inc. and are protected by Federal copyright
+*% law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+*% which should have been included with this file.  If this file is
+*% file is missing or damaged, see the license at "http://www.cups.org/".
+*FormatVersion: "4.3"
+*FileVersion: "1.31"
+*LanguageVersion: English
+*LanguageEncoding: ISOLatin1
+*PCFileName: "LABEL.PPD"
+*Product: "(ESP Ghostscript)"
+*Product: "(GPL Ghostscript)"
+*Manufacturer: "Zebra"
+*ModelName: "Zebra TLP-2844Z ZPL Label Printer with 4 inch square labels"
+*ShortNickName: "Zebra ZPL Label Printer"
+*NickName: "Zebra ZPL Label Printer, 1.3"
+*PSVersion: "(3010.000) 81504"
+*PSVersion: "(3010.000) 860"
+*LanguageLevel: "3"
+*ColorDevice: False
+*DefaultColorSpace: Gray
+*FileSystem: False
+*Throughput: "8"
+*LandscapeOrientation: Plus90
+*TTRasterizer: Type42
+*% Driver-defined attributes...
+*cupsVersion: 1.3
+*cupsModelNumber: 18
+*cupsManualCopies: False
+*cupsFilter: "application/vnd.cups-raster 50 rastertolabel"
+*cupsLanguages: "en"
+*OpenUI *PageSize/Media Size: PickOne
+*OrderDependency: 10 AnySetup *PageSize
+*DefaultPageSize: w288h468
+*PageSize w90h18/1.25x0.25": "<</PageSize[90 18]/ImagingBBox null>>setpagedevice"
+*PageSize w90h162/1.25x2.25": "<</PageSize[90 162]/ImagingBBox null>>setpagedevice"
+*PageSize w108h18/1.50x0.25": "<</PageSize[108 18]/ImagingBBox null>>setpagedevice"
+*PageSize w108h36/1.50x0.50": "<</PageSize[108 36]/ImagingBBox null>>setpagedevice"
+*PageSize w108h72/1.50x1.00": "<</PageSize[108 72]/ImagingBBox null>>setpagedevice"
+*PageSize w108h144/1.50x2.00": "<</PageSize[108 144]/ImagingBBox null>>setpagedevice"
+*PageSize w144h26/2.00x0.37": "<</PageSize[144 26]/ImagingBBox null>>setpagedevice"
+*PageSize w144h36/2.00x0.50": "<</PageSize[144 36]/ImagingBBox null>>setpagedevice"
+*PageSize w144h72/2.00x1.00": "<</PageSize[144 72]/ImagingBBox null>>setpagedevice"
+*PageSize w144h90/2.00x1.25": "<</PageSize[144 90]/ImagingBBox null>>setpagedevice"
+*PageSize w144h288/2.00x4.00": "<</PageSize[144 288]/ImagingBBox null>>setpagedevice"
+*PageSize w144h396/2.00x5.50": "<</PageSize[144 396]/ImagingBBox null>>setpagedevice"
+*PageSize w162h36/2.25x0.50": "<</PageSize[162 36]/ImagingBBox null>>setpagedevice"
+*PageSize w162h90/2.25x1.25": "<</PageSize[162 90]/ImagingBBox null>>setpagedevice"
+*PageSize w162h288/2.25x4.00": "<</PageSize[162 288]/ImagingBBox null>>setpagedevice"
+*PageSize w162h396/2.25x5.50": "<</PageSize[162 396]/ImagingBBox null>>setpagedevice"
+*PageSize w171h396/2.38x5.50": "<</PageSize[171 396]/ImagingBBox null>>setpagedevice"
+*PageSize w180h72/2.50x1.00": "<</PageSize[180 72]/ImagingBBox null>>setpagedevice"
+*PageSize w180h144/2.50x2.00": "<</PageSize[180 144]/ImagingBBox null>>setpagedevice"
+*PageSize w198h90/2.75x1.25": "<</PageSize[198 90]/ImagingBBox null>>setpagedevice"
+*PageSize w216h72/3.00x1.00": "<</PageSize[216 72]/ImagingBBox null>>setpagedevice"
+*PageSize w216h90/3.00x1.25": "<</PageSize[216 90]/ImagingBBox null>>setpagedevice"
+*PageSize w216h144/3.00x2.00": "<</PageSize[216 144]/ImagingBBox null>>setpagedevice"
+*PageSize w216h216/3.00x3.00": "<</PageSize[216 216]/ImagingBBox null>>setpagedevice"
+*PageSize w216h360/3.00x5.00": "<</PageSize[216 360]/ImagingBBox null>>setpagedevice"
+*PageSize w234h144/3.25x2.00": "<</PageSize[234 144]/ImagingBBox null>>setpagedevice"
+*PageSize w234h360/3.25x5.00": "<</PageSize[234 360]/ImagingBBox null>>setpagedevice"
+*PageSize w234h396/3.25x5.50": "<</PageSize[234 396]/ImagingBBox null>>setpagedevice"
+*PageSize w234h419/3.25x5.83": "<</PageSize[234 419]/ImagingBBox null>>setpagedevice"
+*PageSize w234h563/3.25x7.83": "<</PageSize[234 563]/ImagingBBox null>>setpagedevice"
+*PageSize w252h72/3.50x1.00": "<</PageSize[252 72]/ImagingBBox null>>setpagedevice"
+*PageSize w288h72/4.00x1.00": "<</PageSize[288 72]/ImagingBBox null>>setpagedevice"
+*PageSize w288h144/4.00x2.00": "<</PageSize[288 144]/ImagingBBox null>>setpagedevice"
+*PageSize w288h180/4.00x2.50": "<</PageSize[288 180]/ImagingBBox null>>setpagedevice"
+*PageSize w288h216/4.00x3.00": "<</PageSize[288 216]/ImagingBBox null>>setpagedevice"
+*PageSize w288h288/4.00x4.00": "<</PageSize[288 288]/ImagingBBox null>>setpagedevice"
+*PageSize w288h360/4.00x5.00": "<</PageSize[288 360]/ImagingBBox null>>setpagedevice"
+*PageSize w288h432/4.00x6.00": "<</PageSize[288 432]/ImagingBBox null>>setpagedevice"
+*PageSize w288h468/4.00x6.50": "<</PageSize[288 468]/ImagingBBox null>>setpagedevice"
+*PageSize w288h936/4.00x13.00": "<</PageSize[288 936]/ImagingBBox null>>setpagedevice"
+*CloseUI: *PageSize
+*OpenUI *PageRegion/Media Size: PickOne
+*OrderDependency: 10 AnySetup *PageRegion
+*DefaultPageRegion: w288h468
+*PageRegion w90h18/1.25x0.25": "<</PageSize[90 18]/ImagingBBox null>>setpagedevice"
+*PageRegion w90h162/1.25x2.25": "<</PageSize[90 162]/ImagingBBox null>>setpagedevice"
+*PageRegion w108h18/1.50x0.25": "<</PageSize[108 18]/ImagingBBox null>>setpagedevice"
+*PageRegion w108h36/1.50x0.50": "<</PageSize[108 36]/ImagingBBox null>>setpagedevice"
+*PageRegion w108h72/1.50x1.00": "<</PageSize[108 72]/ImagingBBox null>>setpagedevice"
+*PageRegion w108h144/1.50x2.00": "<</PageSize[108 144]/ImagingBBox null>>setpagedevice"
+*PageRegion w144h26/2.00x0.37": "<</PageSize[144 26]/ImagingBBox null>>setpagedevice"
+*PageRegion w144h36/2.00x0.50": "<</PageSize[144 36]/ImagingBBox null>>setpagedevice"
+*PageRegion w144h72/2.00x1.00": "<</PageSize[144 72]/ImagingBBox null>>setpagedevice"
+*PageRegion w144h90/2.00x1.25": "<</PageSize[144 90]/ImagingBBox null>>setpagedevice"
+*PageRegion w144h288/2.00x4.00": "<</PageSize[144 288]/ImagingBBox null>>setpagedevice"
+*PageRegion w144h396/2.00x5.50": "<</PageSize[144 396]/ImagingBBox null>>setpagedevice"
+*PageRegion w162h36/2.25x0.50": "<</PageSize[162 36]/ImagingBBox null>>setpagedevice"
+*PageRegion w162h90/2.25x1.25": "<</PageSize[162 90]/ImagingBBox null>>setpagedevice"
+*PageRegion w162h288/2.25x4.00": "<</PageSize[162 288]/ImagingBBox null>>setpagedevice"
+*PageRegion w162h396/2.25x5.50": "<</PageSize[162 396]/ImagingBBox null>>setpagedevice"
+*PageRegion w171h396/2.38x5.50": "<</PageSize[171 396]/ImagingBBox null>>setpagedevice"
+*PageRegion w180h72/2.50x1.00": "<</PageSize[180 72]/ImagingBBox null>>setpagedevice"
+*PageRegion w180h144/2.50x2.00": "<</PageSize[180 144]/ImagingBBox null>>setpagedevice"
+*PageRegion w198h90/2.75x1.25": "<</PageSize[198 90]/ImagingBBox null>>setpagedevice"
+*PageRegion w216h72/3.00x1.00": "<</PageSize[216 72]/ImagingBBox null>>setpagedevice"
+*PageRegion w216h90/3.00x1.25": "<</PageSize[216 90]/ImagingBBox null>>setpagedevice"
+*PageRegion w216h144/3.00x2.00": "<</PageSize[216 144]/ImagingBBox null>>setpagedevice"
+*PageRegion w216h216/3.00x3.00": "<</PageSize[216 216]/ImagingBBox null>>setpagedevice"
+*PageRegion w216h360/3.00x5.00": "<</PageSize[216 360]/ImagingBBox null>>setpagedevice"
+*PageRegion w234h144/3.25x2.00": "<</PageSize[234 144]/ImagingBBox null>>setpagedevice"
+*PageRegion w234h360/3.25x5.00": "<</PageSize[234 360]/ImagingBBox null>>setpagedevice"
+*PageRegion w234h396/3.25x5.50": "<</PageSize[234 396]/ImagingBBox null>>setpagedevice"
+*PageRegion w234h419/3.25x5.83": "<</PageSize[234 419]/ImagingBBox null>>setpagedevice"
+*PageRegion w234h563/3.25x7.83": "<</PageSize[234 563]/ImagingBBox null>>setpagedevice"
+*PageRegion w252h72/3.50x1.00": "<</PageSize[252 72]/ImagingBBox null>>setpagedevice"
+*PageRegion w288h72/4.00x1.00": "<</PageSize[288 72]/ImagingBBox null>>setpagedevice"
+*PageRegion w288h144/4.00x2.00": "<</PageSize[288 144]/ImagingBBox null>>setpagedevice"
+*PageRegion w288h180/4.00x2.50": "<</PageSize[288 180]/ImagingBBox null>>setpagedevice"
+*PageRegion w288h216/4.00x3.00": "<</PageSize[288 216]/ImagingBBox null>>setpagedevice"
+*PageRegion w288h288/4.00x4.00": "<</PageSize[288 288]/ImagingBBox null>>setpagedevice"
+*PageRegion w288h360/4.00x5.00": "<</PageSize[288 360]/ImagingBBox null>>setpagedevice"
+*PageRegion w288h432/4.00x6.00": "<</PageSize[288 432]/ImagingBBox null>>setpagedevice"
+*PageRegion w288h468/4.00x6.50": "<</PageSize[288 468]/ImagingBBox null>>setpagedevice"
+*PageRegion w288h936/4.00x13.00": "<</PageSize[288 936]/ImagingBBox null>>setpagedevice"
+*CloseUI: *PageRegion
+*DefaultImageableArea: w288h468
+*ImageableArea w90h18/1.25x0.25": "0.00 0.00 90.00 18.00"
+*ImageableArea w90h162/1.25x2.25": "0.00 0.00 90.00 162.00"
+*ImageableArea w108h18/1.50x0.25": "0.00 0.00 108.00 18.00"
+*ImageableArea w108h36/1.50x0.50": "0.00 0.00 108.00 36.00"
+*ImageableArea w108h72/1.50x1.00": "0.00 0.00 108.00 72.00"
+*ImageableArea w108h144/1.50x2.00": "0.00 0.00 108.00 144.00"
+*ImageableArea w144h26/2.00x0.37": "0.00 0.00 144.00 26.00"
+*ImageableArea w144h36/2.00x0.50": "0.00 0.00 144.00 36.00"
+*ImageableArea w144h72/2.00x1.00": "0.00 0.00 144.00 72.00"
+*ImageableArea w144h90/2.00x1.25": "0.00 0.00 144.00 90.00"
+*ImageableArea w144h288/2.00x4.00": "0.00 0.00 144.00 288.00"
+*ImageableArea w144h396/2.00x5.50": "0.00 0.00 144.00 396.00"
+*ImageableArea w162h36/2.25x0.50": "0.00 0.00 162.00 36.00"
+*ImageableArea w162h90/2.25x1.25": "0.00 0.00 162.00 90.00"
+*ImageableArea w162h288/2.25x4.00": "0.00 0.00 162.00 288.00"
+*ImageableArea w162h396/2.25x5.50": "0.00 0.00 162.00 396.00"
+*ImageableArea w171h396/2.38x5.50": "0.00 0.00 171.00 396.00"
+*ImageableArea w180h72/2.50x1.00": "0.00 0.00 180.00 72.00"
+*ImageableArea w180h144/2.50x2.00": "0.00 0.00 180.00 144.00"
+*ImageableArea w198h90/2.75x1.25": "0.00 0.00 198.00 90.00"
+*ImageableArea w216h72/3.00x1.00": "0.00 0.00 216.00 72.00"
+*ImageableArea w216h90/3.00x1.25": "0.00 0.00 216.00 90.00"
+*ImageableArea w216h144/3.00x2.00": "0.00 0.00 216.00 144.00"
+*ImageableArea w216h216/3.00x3.00": "0.00 0.00 216.00 216.00"
+*ImageableArea w216h360/3.00x5.00": "0.00 0.00 216.00 360.00"
+*ImageableArea w234h144/3.25x2.00": "0.00 0.00 234.00 144.00"
+*ImageableArea w234h360/3.25x5.00": "0.00 0.00 234.00 360.00"
+*ImageableArea w234h396/3.25x5.50": "0.00 0.00 234.00 396.00"
+*ImageableArea w234h419/3.25x5.83": "0.00 0.00 234.00 419.00"
+*ImageableArea w234h563/3.25x7.83": "0.00 0.00 234.00 563.00"
+*ImageableArea w252h72/3.50x1.00": "0.00 0.00 252.00 72.00"
+*ImageableArea w288h72/4.00x1.00": "0.00 0.00 288.00 72.00"
+*ImageableArea w288h144/4.00x2.00": "0.00 0.00 288.00 144.00"
+*ImageableArea w288h180/4.00x2.50": "0.00 0.00 288.00 180.00"
+*ImageableArea w288h216/4.00x3.00": "0.00 0.00 288.00 216.00"
+*ImageableArea w288h288/4.00x4.00": "0.00 0.00 288.00 288.00"
+*ImageableArea w288h360/4.00x5.00": "0.00 0.00 288.00 360.00"
+*ImageableArea w288h432/4.00x6.00": "0.00 0.00 288.00 432.00"
+*ImageableArea w288h468/4.00x6.50": "0.00 0.00 288.00 468.00"
+*ImageableArea w288h936/4.00x13.00": "0.00 0.00 288.00 936.00"
+*DefaultPaperDimension: w288h468
+*PaperDimension w90h18/1.25x0.25": "90.00 18.00"
+*PaperDimension w90h162/1.25x2.25": "90.00 162.00"
+*PaperDimension w108h18/1.50x0.25": "108.00 18.00"
+*PaperDimension w108h36/1.50x0.50": "108.00 36.00"
+*PaperDimension w108h72/1.50x1.00": "108.00 72.00"
+*PaperDimension w108h144/1.50x2.00": "108.00 144.00"
+*PaperDimension w144h26/2.00x0.37": "144.00 26.00"
+*PaperDimension w144h36/2.00x0.50": "144.00 36.00"
+*PaperDimension w144h72/2.00x1.00": "144.00 72.00"
+*PaperDimension w144h90/2.00x1.25": "144.00 90.00"
+*PaperDimension w144h288/2.00x4.00": "144.00 288.00"
+*PaperDimension w144h396/2.00x5.50": "144.00 396.00"
+*PaperDimension w162h36/2.25x0.50": "162.00 36.00"
+*PaperDimension w162h90/2.25x1.25": "162.00 90.00"
+*PaperDimension w162h288/2.25x4.00": "162.00 288.00"
+*PaperDimension w162h396/2.25x5.50": "162.00 396.00"
+*PaperDimension w171h396/2.38x5.50": "171.00 396.00"
+*PaperDimension w180h72/2.50x1.00": "180.00 72.00"
+*PaperDimension w180h144/2.50x2.00": "180.00 144.00"
+*PaperDimension w198h90/2.75x1.25": "198.00 90.00"
+*PaperDimension w216h72/3.00x1.00": "216.00 72.00"
+*PaperDimension w216h90/3.00x1.25": "216.00 90.00"
+*PaperDimension w216h144/3.00x2.00": "216.00 144.00"
+*PaperDimension w216h216/3.00x3.00": "216.00 216.00"
+*PaperDimension w216h360/3.00x5.00": "216.00 360.00"
+*PaperDimension w234h144/3.25x2.00": "234.00 144.00"
+*PaperDimension w234h360/3.25x5.00": "234.00 360.00"
+*PaperDimension w234h396/3.25x5.50": "234.00 396.00"
+*PaperDimension w234h419/3.25x5.83": "234.00 419.00"
+*PaperDimension w234h563/3.25x7.83": "234.00 563.00"
+*PaperDimension w252h72/3.50x1.00": "252.00 72.00"
+*PaperDimension w288h72/4.00x1.00": "288.00 72.00"
+*PaperDimension w288h144/4.00x2.00": "288.00 144.00"
+*PaperDimension w288h180/4.00x2.50": "288.00 180.00"
+*PaperDimension w288h216/4.00x3.00": "288.00 216.00"
+*PaperDimension w288h288/4.00x4.00": "288.00 288.00"
+*PaperDimension w288h360/4.00x5.00": "288.00 360.00"
+*PaperDimension w288h432/4.00x6.00": "288.00 432.00"
+*PaperDimension w288h468/4.00x6.50": "288.00 468.00"
+*PaperDimension w288h936/4.00x13.00": "288.00 936.00"
+*MaxMediaWidth: "576.00"
+*MaxMediaHeight: "3600.00"
+*HWMargins: 0.00 0.00 0.00 0.00
+*CustomPageSize True: "pop pop pop <</PageSize[5 -2 roll]/ImagingBBox null>>setpagedevice"
+*ParamCustomPageSize Width: 1 points 36.00 576.00
+*ParamCustomPageSize Height: 2 points 36.00 3600.00
+*ParamCustomPageSize WidthOffset: 3 points 0 0
+*ParamCustomPageSize HeightOffset: 4 points 0 0
+*ParamCustomPageSize Orientation: 5 int 0 0
+*RequiresPageRegion All: True
+*OpenUI *Resolution: PickOne
+*OrderDependency: 10.0 AnySetup *Resolution
+*DefaultResolution: 203dpi
+*Resolution 203dpi: "<</HWResolution[203 203]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
+*CloseUI: *Resolution
+*OpenUI *zeMediaTracking/Media Tracking: PickOne
+*OrderDependency: 20.0 AnySetup *zeMediaTracking
+*DefaultzeMediaTracking: Web
+*zeMediaTracking Continuous: ""
+*zeMediaTracking Web/Non-continuous (Web sensing): ""
+*zeMediaTracking Mark/Non-continuous (Mark sensing): ""
+*CloseUI: *zeMediaTracking
+*OpenUI *MediaType/Media Type: PickOne
+*OrderDependency: 20.0 AnySetup *MediaType
+*DefaultMediaType: Saved
+*MediaType Saved/Printer Default: ""
+*MediaType Thermal/Thermal Transfer Media: "<</MediaType(Thermal)>>setpagedevice"
+*MediaType Direct/Direct Thermal Media: "<</MediaType(Direct)>>setpagedevice"
+*CloseUI: *MediaType
+*OpenGroup: PrinterSettings/Printer Settings
+*OpenUI *Darkness: PickOne
+*OrderDependency: 20.0 AnySetup *Darkness
+*DefaultDarkness: -1
+*Darkness -1/Printer Default: "<</cupsCompression -1>>setpagedevice"
+*Darkness 1: "<</cupsCompression 4>>setpagedevice"
+*Darkness 2: "<</cupsCompression 7>>setpagedevice"
+*Darkness 3: "<</cupsCompression 10>>setpagedevice"
+*Darkness 4: "<</cupsCompression 14>>setpagedevice"
+*Darkness 5: "<</cupsCompression 17>>setpagedevice"
+*Darkness 6: "<</cupsCompression 20>>setpagedevice"
+*Darkness 7: "<</cupsCompression 24>>setpagedevice"
+*Darkness 8: "<</cupsCompression 27>>setpagedevice"
+*Darkness 9: "<</cupsCompression 30>>setpagedevice"
+*Darkness 10: "<</cupsCompression 34>>setpagedevice"
+*Darkness 11: "<</cupsCompression 37>>setpagedevice"
+*Darkness 12: "<</cupsCompression 40>>setpagedevice"
+*Darkness 13: "<</cupsCompression 44>>setpagedevice"
+*Darkness 14: "<</cupsCompression 47>>setpagedevice"
+*Darkness 15: "<</cupsCompression 50>>setpagedevice"
+*Darkness 16: "<</cupsCompression 54>>setpagedevice"
+*Darkness 17: "<</cupsCompression 57>>setpagedevice"
+*Darkness 18: "<</cupsCompression 60>>setpagedevice"
+*Darkness 19: "<</cupsCompression 64>>setpagedevice"
+*Darkness 20: "<</cupsCompression 67>>setpagedevice"
+*Darkness 21: "<</cupsCompression 70>>setpagedevice"
+*Darkness 22: "<</cupsCompression 74>>setpagedevice"
+*Darkness 23: "<</cupsCompression 77>>setpagedevice"
+*Darkness 24: "<</cupsCompression 80>>setpagedevice"
+*Darkness 25: "<</cupsCompression 84>>setpagedevice"
+*Darkness 26: "<</cupsCompression 87>>setpagedevice"
+*Darkness 27: "<</cupsCompression 90>>setpagedevice"
+*Darkness 28: "<</cupsCompression 94>>setpagedevice"
+*Darkness 29: "<</cupsCompression 97>>setpagedevice"
+*Darkness 30: "<</cupsCompression 100>>setpagedevice"
+*CloseUI: *Darkness
+*OpenUI *zePrintRate/Print Rate: PickOne
+*OrderDependency: 20.0 AnySetup *zePrintRate
+*DefaultzePrintRate: Default
+*zePrintRate Default/Printer Default: ""
+*zePrintRate 1/1 inch/sec.: ""
+*zePrintRate 2/2 inches/sec.: ""
+*zePrintRate 3/3 inches/sec.: ""
+*zePrintRate 4/4 inches/sec.: ""
+*zePrintRate 5/5 inches/sec.: ""
+*zePrintRate 6/6 inches/sec.: ""
+*zePrintRate 7/7 inches/sec.: ""
+*zePrintRate 8/8 inches/sec.: ""
+*zePrintRate 9/9 inches/sec.: ""
+*zePrintRate 10/10 inches/sec.: ""
+*zePrintRate 11/11 inches/sec.: ""
+*zePrintRate 12/12 inches/sec.: ""
+*CloseUI: *zePrintRate
+*OpenUI *zeLabelTop/Label Top: PickOne
+*OrderDependency: 20.0 AnySetup *zeLabelTop
+*DefaultzeLabelTop: 200
+*zeLabelTop 200/Printer Default: "<</cupsRowStep 200>>setpagedevice"
+*zeLabelTop -120: "<</cupsRowStep -120>>setpagedevice"
+*zeLabelTop -115: "<</cupsRowStep -115>>setpagedevice"
+*zeLabelTop -110: "<</cupsRowStep -110>>setpagedevice"
+*zeLabelTop -105: "<</cupsRowStep -105>>setpagedevice"
+*zeLabelTop -100: "<</cupsRowStep -100>>setpagedevice"
+*zeLabelTop -95: "<</cupsRowStep -95>>setpagedevice"
+*zeLabelTop -90: "<</cupsRowStep -90>>setpagedevice"
+*zeLabelTop -85: "<</cupsRowStep -85>>setpagedevice"
+*zeLabelTop -80: "<</cupsRowStep -80>>setpagedevice"
+*zeLabelTop -75: "<</cupsRowStep -75>>setpagedevice"
+*zeLabelTop -70: "<</cupsRowStep -70>>setpagedevice"
+*zeLabelTop -65: "<</cupsRowStep -65>>setpagedevice"
+*zeLabelTop -60: "<</cupsRowStep -60>>setpagedevice"
+*zeLabelTop -55: "<</cupsRowStep -55>>setpagedevice"
+*zeLabelTop -50: "<</cupsRowStep -50>>setpagedevice"
+*zeLabelTop -45: "<</cupsRowStep -45>>setpagedevice"
+*zeLabelTop -40: "<</cupsRowStep -40>>setpagedevice"
+*zeLabelTop -35: "<</cupsRowStep -35>>setpagedevice"
+*zeLabelTop -30: "<</cupsRowStep -30>>setpagedevice"
+*zeLabelTop -25: "<</cupsRowStep -25>>setpagedevice"
+*zeLabelTop -20: "<</cupsRowStep -20>>setpagedevice"
+*zeLabelTop -15: "<</cupsRowStep -15>>setpagedevice"
+*zeLabelTop -10: "<</cupsRowStep -10>>setpagedevice"
+*zeLabelTop -5: "<</cupsRowStep -5>>setpagedevice"
+*zeLabelTop 0: "<</cupsRowStep 0>>setpagedevice"
+*zeLabelTop 5: "<</cupsRowStep 5>>setpagedevice"
+*zeLabelTop 10: "<</cupsRowStep 10>>setpagedevice"
+*zeLabelTop 15: "<</cupsRowStep 15>>setpagedevice"
+*zeLabelTop 20: "<</cupsRowStep 20>>setpagedevice"
+*zeLabelTop 25: "<</cupsRowStep 25>>setpagedevice"
+*zeLabelTop 30: "<</cupsRowStep 30>>setpagedevice"
+*zeLabelTop 35: "<</cupsRowStep 35>>setpagedevice"
+*zeLabelTop 40: "<</cupsRowStep 40>>setpagedevice"
+*zeLabelTop 45: "<</cupsRowStep 45>>setpagedevice"
+*zeLabelTop 50: "<</cupsRowStep 50>>setpagedevice"
+*zeLabelTop 55: "<</cupsRowStep 55>>setpagedevice"
+*zeLabelTop 60: "<</cupsRowStep 60>>setpagedevice"
+*zeLabelTop 65: "<</cupsRowStep 65>>setpagedevice"
+*zeLabelTop 70: "<</cupsRowStep 70>>setpagedevice"
+*zeLabelTop 75: "<</cupsRowStep 75>>setpagedevice"
+*zeLabelTop 80: "<</cupsRowStep 80>>setpagedevice"
+*zeLabelTop 85: "<</cupsRowStep 85>>setpagedevice"
+*zeLabelTop 90: "<</cupsRowStep 90>>setpagedevice"
+*zeLabelTop 95: "<</cupsRowStep 95>>setpagedevice"
+*zeLabelTop 100: "<</cupsRowStep 100>>setpagedevice"
+*zeLabelTop 105: "<</cupsRowStep 105>>setpagedevice"
+*zeLabelTop 110: "<</cupsRowStep 110>>setpagedevice"
+*zeLabelTop 115: "<</cupsRowStep 115>>setpagedevice"
+*zeLabelTop 120: "<</cupsRowStep 120>>setpagedevice"
+*CloseUI: *zeLabelTop
+*OpenUI *zePrintMode/Print Mode: PickOne
+*OrderDependency: 20.0 AnySetup *zePrintMode
+*DefaultzePrintMode: Saved
+*zePrintMode Saved/Printer Default: ""
+*zePrintMode Tear/Tear-Off: ""
+*zePrintMode Peel/Peel-Off: ""
+*zePrintMode Rewind: ""
+*zePrintMode Applicator: ""
+*zePrintMode Cutter: ""
+*CloseUI: *zePrintMode
+*OpenUI *zeTearOffPosition/Tear-Off Adjust Position: PickOne
+*OrderDependency: 20.0 AnySetup *zeTearOffPosition
+*DefaultzeTearOffPosition: 1000
+*zeTearOffPosition 1000/Printer Default: "<</AdvanceDistance 1000>>setpagedevice"
+*zeTearOffPosition -120: "<</AdvanceDistance -120>>setpagedevice"
+*zeTearOffPosition -115: "<</AdvanceDistance -115>>setpagedevice"
+*zeTearOffPosition -110: "<</AdvanceDistance -110>>setpagedevice"
+*zeTearOffPosition -105: "<</AdvanceDistance -105>>setpagedevice"
+*zeTearOffPosition -100: "<</AdvanceDistance -100>>setpagedevice"
+*zeTearOffPosition -95: "<</AdvanceDistance -95>>setpagedevice"
+*zeTearOffPosition -90: "<</AdvanceDistance -90>>setpagedevice"
+*zeTearOffPosition -85: "<</AdvanceDistance -85>>setpagedevice"
+*zeTearOffPosition -80: "<</AdvanceDistance -80>>setpagedevice"
+*zeTearOffPosition -75: "<</AdvanceDistance -75>>setpagedevice"
+*zeTearOffPosition -70: "<</AdvanceDistance -70>>setpagedevice"
+*zeTearOffPosition -65: "<</AdvanceDistance -65>>setpagedevice"
+*zeTearOffPosition -60: "<</AdvanceDistance -60>>setpagedevice"
+*zeTearOffPosition -55: "<</AdvanceDistance -55>>setpagedevice"
+*zeTearOffPosition -50: "<</AdvanceDistance -50>>setpagedevice"
+*zeTearOffPosition -45: "<</AdvanceDistance -45>>setpagedevice"
+*zeTearOffPosition -40: "<</AdvanceDistance -40>>setpagedevice"
+*zeTearOffPosition -35: "<</AdvanceDistance -35>>setpagedevice"
+*zeTearOffPosition -30: "<</AdvanceDistance -30>>setpagedevice"
+*zeTearOffPosition -25: "<</AdvanceDistance -25>>setpagedevice"
+*zeTearOffPosition -20: "<</AdvanceDistance -20>>setpagedevice"
+*zeTearOffPosition -15: "<</AdvanceDistance -15>>setpagedevice"
+*zeTearOffPosition -10: "<</AdvanceDistance -10>>setpagedevice"
+*zeTearOffPosition -5: "<</AdvanceDistance -5>>setpagedevice"
+*zeTearOffPosition 0: "<</AdvanceDistance 0>>setpagedevice"
+*zeTearOffPosition 5: "<</AdvanceDistance 5>>setpagedevice"
+*zeTearOffPosition 10: "<</AdvanceDistance 10>>setpagedevice"
+*zeTearOffPosition 15: "<</AdvanceDistance 15>>setpagedevice"
+*zeTearOffPosition 20: "<</AdvanceDistance 20>>setpagedevice"
+*zeTearOffPosition 25: "<</AdvanceDistance 25>>setpagedevice"
+*zeTearOffPosition 30: "<</AdvanceDistance 30>>setpagedevice"
+*zeTearOffPosition 35: "<</AdvanceDistance 35>>setpagedevice"
+*zeTearOffPosition 40: "<</AdvanceDistance 40>>setpagedevice"
+*zeTearOffPosition 45: "<</AdvanceDistance 45>>setpagedevice"
+*zeTearOffPosition 50: "<</AdvanceDistance 50>>setpagedevice"
+*zeTearOffPosition 55: "<</AdvanceDistance 55>>setpagedevice"
+*zeTearOffPosition 60: "<</AdvanceDistance 60>>setpagedevice"
+*zeTearOffPosition 65: "<</AdvanceDistance 65>>setpagedevice"
+*zeTearOffPosition 70: "<</AdvanceDistance 70>>setpagedevice"
+*zeTearOffPosition 75: "<</AdvanceDistance 75>>setpagedevice"
+*zeTearOffPosition 80: "<</AdvanceDistance 80>>setpagedevice"
+*zeTearOffPosition 85: "<</AdvanceDistance 85>>setpagedevice"
+*zeTearOffPosition 90: "<</AdvanceDistance 90>>setpagedevice"
+*zeTearOffPosition 95: "<</AdvanceDistance 95>>setpagedevice"
+*zeTearOffPosition 100: "<</AdvanceDistance 100>>setpagedevice"
+*zeTearOffPosition 105: "<</AdvanceDistance 105>>setpagedevice"
+*zeTearOffPosition 110: "<</AdvanceDistance 110>>setpagedevice"
+*zeTearOffPosition 115: "<</AdvanceDistance 115>>setpagedevice"
+*zeTearOffPosition 120: "<</AdvanceDistance 120>>setpagedevice"
+*CloseUI: *zeTearOffPosition
+*OpenUI *zeErrorReprint/Reprint After Error: PickOne
+*OrderDependency: 20.0 AnySetup *zeErrorReprint
+*DefaultzeErrorReprint: Saved
+*zeErrorReprint Saved/Printer Default: ""
+*zeErrorReprint Always: ""
+*zeErrorReprint Never: ""
+*CloseUI: *zeErrorReprint
+*CloseGroup: PrinterSettings
+*DefaultFont: Courier
+*Font AvantGarde-Book: Standard "(1.05)" Standard ROM
+*Font AvantGarde-BookOblique: Standard "(1.05)" Standard ROM
+*Font AvantGarde-Demi: Standard "(1.05)" Standard ROM
+*Font AvantGarde-DemiOblique: Standard "(1.05)" Standard ROM
+*Font Bookman-Demi: Standard "(1.05)" Standard ROM
+*Font Bookman-DemiItalic: Standard "(1.05)" Standard ROM
+*Font Bookman-Light: Standard "(1.05)" Standard ROM
+*Font Bookman-LightItalic: Standard "(1.05)" Standard ROM
+*Font Courier: Standard "(1.05)" Standard ROM
+*Font Courier-Bold: Standard "(1.05)" Standard ROM
+*Font Courier-BoldOblique: Standard "(1.05)" Standard ROM
+*Font Courier-Oblique: Standard "(1.05)" Standard ROM
+*Font Helvetica: Standard "(1.05)" Standard ROM
+*Font Helvetica-Bold: Standard "(1.05)" Standard ROM
+*Font Helvetica-BoldOblique: Standard "(1.05)" Standard ROM
+*Font Helvetica-Narrow: Standard "(1.05)" Standard ROM
+*Font Helvetica-Narrow-Bold: Standard "(1.05)" Standard ROM
+*Font Helvetica-Narrow-BoldOblique: Standard "(1.05)" Standard ROM
+*Font Helvetica-Narrow-Oblique: Standard "(1.05)" Standard ROM
+*Font Helvetica-Oblique: Standard "(1.05)" Standard ROM
+*Font NewCenturySchlbk-Bold: Standard "(1.05)" Standard ROM
+*Font NewCenturySchlbk-BoldItalic: Standard "(1.05)" Standard ROM
+*Font NewCenturySchlbk-Italic: Standard "(1.05)" Standard ROM
+*Font NewCenturySchlbk-Roman: Standard "(1.05)" Standard ROM
+*Font Palatino-Bold: Standard "(1.05)" Standard ROM
+*Font Palatino-BoldItalic: Standard "(1.05)" Standard ROM
+*Font Palatino-Italic: Standard "(1.05)" Standard ROM
+*Font Palatino-Roman: Standard "(1.05)" Standard ROM
+*Font Symbol: Special "(001.005)" Special ROM
+*Font Times-Bold: Standard "(1.05)" Standard ROM
+*Font Times-BoldItalic: Standard "(1.05)" Standard ROM
+*Font Times-Italic: Standard "(1.05)" Standard ROM
+*Font Times-Roman: Standard "(1.05)" Standard ROM
+*Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
+*Font ZapfDingbats: Special "(001.005)" Special ROM
+*% End of ZEBRA4.PPD, 14,498 bytes.

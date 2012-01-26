@@ -78,7 +78,7 @@ class CIOPrintFile {
 								return $resultArray;
 						}
 						else{
-							self::$errorMessage = "Failed to contact printer priver";
+							self::$errorMessage = "Failed to contact printer driver with: ".$command;
 							return false;
 						}
 					} catch(Exception $e){

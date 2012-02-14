@@ -149,7 +149,7 @@ class CIOCloudPrint {
 	// Get all submitted jobs for printer with specified id, or all printers if no id.
 	// Lists jobs of all status other than DONE
 	//*************************************************************************
-	function listJobs($id){
+	function listJobs($limit, $id){
 		if(!$this->login())
 			return false;
 		$this->client->setHeaders('Authorization','GoogleLogin auth='.$this->Client_Login_Token); 
@@ -166,8 +166,12 @@ class CIOCloudPrint {
 		if ($success){
 			$results = $data->jobs;
 			$jobs = array();
+			$count = 0;
 			foreach ($results as $job){
+				$count++;
 				$jobs[] = $this->jobObjectToArray($job);
+				if ($count == $limit)
+					break;
 			}
 			return $jobs;
 		}

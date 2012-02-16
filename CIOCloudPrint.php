@@ -7,7 +7,7 @@
  * Date: 10/04/11                                                 *
  *                                                                *
  * Object for talking to Google Cloud Print                       *
- *	- Acts asserver for submitting jobs & client for receiving    *
+ *  - Acts asserver for submitting jobs & client for receiving    *
  * Uses: CIOPrinting (optional - only needed for printing)        *
  *                                                                *
  * Sign Date     Change                                           *
@@ -147,7 +147,7 @@ class CIOCloudPrint {
 	
 	//*************************************************************************
 	// Get all submitted jobs for printer with specified id, or all printers if no id.
-	// Lists jobs of all status other than DONE
+	// Lists jobs of all status.
 	//*************************************************************************
 	function listJobs($limit, $id){
 		if(!$this->login())
@@ -429,16 +429,14 @@ class CIOCloudPrint {
 	// Get printer name from printer id
 	//*************************************************************************
 	function getPrinterName($id){
-		$temp = $this->getPrinter($id);
-		return $temp->name;
+		return $this->getPrinter($id)->name;
 	}
 	
 	//*************************************************************************
 	// Get printer tag from printer id
 	//*************************************************************************
 	function getPrinterDisplayName($id){
-		$temp = $this->getPrinter($id);
-		return $temp->displayName;
+		return $this->getPrinter($id)->displayName;
 	}
 	
 	

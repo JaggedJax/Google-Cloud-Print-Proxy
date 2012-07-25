@@ -21,7 +21,7 @@ class CIOPrintFile {
 	//			FALSE if it couldn't connect to the printer
 	//			ARRAY() of output lines if there were printing errors
 	//*************************************************************************
-	public static function printFile($files, $printer, $orientation="PORTRAIT", $sides="ONE_SIDED", $margin=0.25, $width=8.5, $height=11, $copies=1){
+	public static function printFile($files, $printer, $orientation="PORTRAIT", $sides="ONE_SIDED", $margin=0.5, $width=8.5, $height=11, $copies=1){
 		if ($orientation != 'PORTRAIT' && $orientation != 'LANDSCAPE'){
 			self::$errorMessage = "Invalid Orientation. Must be PORTRAIT, LANDSCAPE, or NULL";
 			return false;

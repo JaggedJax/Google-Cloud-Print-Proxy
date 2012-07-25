@@ -23,17 +23,21 @@ class CIOCloudPrint {
 	
 	private $apiUri;
 	
+	private $log_obj;
+	
 	var $errorMessage;
 	
 	//*************************************************************************
 	// Constructor - Loads Zend
 	//*************************************************************************
-	function __construct(){
+	function __construct(&$log=null){
 		// Include Zend
-		if (strpos(ini_get('include_path'), dirname(__FILE__)) === false){
-			ini_set('include_path', ini_get('include_path').PATH_SEPARATOR.dirname(__FILE__));
+		if (strpos(ini_get('include_path'), DIRECTORY_SEPARATOR."gcp") === false){
+			$locDir = dirname(__FILE__);
+			ini_set('include_path', ini_get('include_path').PATH_SEPARATOR."$locDir");
 		}
 		
+		if ($log) $this->log_obj = $log;
 		$this->errorMessage = "";
 		$this->apiUri = "https://www.google.com/cloudprint/";
 		require_once 'Zend/Loader.php';
@@ -540,7 +544,7 @@ class CIOCloudPrint {
 			if (!$width) $width=8.5;
 			if (!$height) $height=11;
 			if (!$printer)
-				$printer = ($useDisplay && substr(trim($this->getPrinterName($id), $cioprinters), 0, 4) == 'CIO_') ? trim($this->getPrinterDisplayName($id)) : trim($this->getPrinterName($id));
+				$printer = ($useDisplay && substr(trim($this->getPrinterName($id)), 0, 4) == 'CIO_') ? trim($this->getPrinterDisplayName($id)) : trim($this->getPrinterName($id));
 			// Temp Filename and location
 			$tempFile = "";
 			$end = substr($job['title'], strrpos($job['title'], '.'));
@@ -565,6 +569,7 @@ class CIOCloudPrint {
 			if ($response->isSuccessful()){
 				// Send to printer
 				$this->setJobStatus($jobID, 'IN_PROGRESS'); // Mark IN_PROGRESS
+				if($this->log_obj) $this->log_obj->write_log("Printing <$toPrint> to <$printer>");
 				$result = CIOPrintFile::printFile($toPrint, $printer, $orientation, $sides, $margin, $width, $height);
 				if ($result === false){
 					unlink($toPrint);
@@ -703,7 +708,7 @@ class CIOCloudPrint {
 		$string = '';
 		mt_srand(self::make_seed());
 		for ($p = 0; $p < $length; $p++) {
-			$string .= $characters[mt_rand(0, strlen($characters))];
+			$string .= $characters[mt_rand(0, strlen($characters)-1)];
 		}
 		return $string;
 	}

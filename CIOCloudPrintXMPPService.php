@@ -15,6 +15,7 @@
 require_once 'XMPPHP/XMPP.php';
 require_once 'Zend/Loader.php';
 require_once 'CIOCloudPrint.php';
+require_once '../CIOLog.php';
 
 Zend_Loader::loadClass('Zend_Http_Client');
 Zend_Loader::loadClass('Zend_Gdata_ClientLogin');
@@ -24,6 +25,7 @@ $maxForks = 10;
 $numForks = 0;
 $useDesc = true; // True means printer name stored in tag field of cloud printer
 $errors = "";
+$log_obj = new CIOLog("./log/","CloudPrint","monthly");
 
 if (count($argv) > 2){
 	$G_Email = trim($argv[1]);
@@ -38,9 +40,11 @@ if (count($argv) > 2){
 		}
 	}
 }
-else
+else{
+	$log_obj->write_log("Must pass login parameters");
 	die("Must pass login parameters");
-$cp = new CIOCloudPrint();
+}
+$cp = new CIOCloudPrint($log_obj);
 if (!$cp->authenticate($G_Email, $G_Pass))
 	die($cp->errorMessage);
 
@@ -49,19 +53,24 @@ $numReconnects = 0;
 
 //Print any queued files
 // Fork so we don't miss any new incoming jobs
+//$log_obj->write_log("Checking for waiting print files.");
 if ($verbose){
 	echo "Checking for waiting print files.\n";
 	$errors = "\n";	
 }
 if (stristr(PHP_OS, 'WIN')){
-	if (!$cp->printAllFiles(null, null, null, null, null, null, null, null, $useDesc, $errors))
+	if (!$cp->printAllFiles(null, null, null, null, null, null, null, null, $useDesc, $errors)){
+		$log_obj->write_log("Printing Error: "+$cp->errorMessage);
 		if ($verbose) echo $cp->errorMessage;
+	}
 }
 else{
 	$pid = pcntl_fork();
 	if ($pid == 0){
-		if (!$cp->printAllFiles(null, null, null, null, null, null, null, null, $useDesc, $errors))
+		if (!$cp->printAllFiles(null, null, null, null, null, null, null, null, $useDesc, $errors)){
+			$log_obj->write_log("Printing Error: "+$cp->errorMessage);
 			if ($verbose) echo $cp->errorMessage;
+		}
 		exit(0);
 	}
 }
@@ -76,6 +85,7 @@ if (!$fh || !$gotLock){
 	fclose($fh);
 	exit(1);
 }
+$log_obj->write_log("Got lock, connecting to Google.");
 //else if ($verbose)
 	echo "Got lock, connecting to Google.\n";
 
@@ -108,11 +118,15 @@ do{
 						{
 							// We have received a push for this Print Proxy ID + User.   
 							// Now we can /fetch print jobs for this Proxy, User, Printer ID
+							$log_obj->write_log("Print Job Notification Received for printer " . $printerID);
 							if ($verbose)
 								echo "Print Job Notification Received for printer " . $printerID . "\n";
 							$result = $cp->printAllFiles($printerID, null, null, null, null, null, null, null, $useDesc, $errors);
-							if (!$result && $verbose)
-								echo $cp->errorMessage."\n";
+							if (!$result){
+								$log_obj->write_log("Error printing: ".$cp->errorMessage);
+								if ($verbose)
+									echo "Error printing: ".$cp->errorMessage."\n";
+							}
 						}   				
 					break;
 					case 'session_start': 			
@@ -127,6 +141,7 @@ do{
 	} catch(Exception $e) {
 		if ($numForks < $maxForks){
 			$numForks++;
+			$log_obj->write_log("Forking because of error: ".$e->getMessage());
 			if ($verbose)
 				echo "Forking because of error: ".$e->getMessage()."\n";
 			if (stristr(PHP_OS, 'WIN')){ // Windows

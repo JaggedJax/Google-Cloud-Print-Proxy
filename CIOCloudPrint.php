@@ -7,7 +7,7 @@
  * Date: 10/04/11                                                 *
  *                                                                *
  * Object for talking to Google Cloud Print                       *
- *  - Acts asserver for submitting jobs & client for receiving    *
+ *  - Acts as server for submitting jobs & client for receiving    *
  * Uses: CIOPrinting (optional - only needed for printing)        *
  *                                                                *
  * Sign Date     Change                                           *
@@ -153,15 +153,19 @@ class CIOCloudPrint {
 	// Get all submitted jobs for printer with specified id, or all printers if no id.
 	// Lists jobs of all status.
 	//*************************************************************************
-	function listJobs($limit, $id){
+	function listJobs($limit=0, $id=null, $status=null){
 		if(!$this->login())
 			return false;
 		$this->client->setHeaders('Authorization','GoogleLogin auth='.$this->Client_Login_Token); 
 		$this->client->setHeaders('X-CloudPrint-Proxy','CIO-Technologies');
 		//GCP Services - Printer URI
 		$this->client->setUri($this->apiUri.'jobs');
-		if ($id)
+		if ($status && !is_array($status)){
+			$status = array($status);
+		}
+		if ($id){
 			$this->client->setParameterPost('printerid', $id);
+		}
 		$this->client->setParameterPost('xyz', $this->rand_string(5));
 		$response = $this->client->request(Zend_Http_Client::POST);
 		$data = json_decode($response->getBody());
@@ -173,9 +177,13 @@ class CIOCloudPrint {
 			$count = 0;
 			foreach ($results as $job){
 				$count++;
-				$jobs[] = $this->jobObjectToArray($job);
-				if ($count == $limit)
+				$tempJob = $this->jobObjectToArray($job);
+				if (!$status || in_array($tempJob['status'], $status)){
+					$jobs[] = $tempJob;
+				}
+				if ($count == $limit){
 					break;
+				}
 			}
 			return $jobs;
 		}
@@ -204,7 +212,7 @@ class CIOCloudPrint {
 	// Submit a file to specified printer
 	// Job tag is any string the submitter wants and can be retreived when fetching the job.
 	//*************************************************************************
-	function submitJob($filePath, $printerId, $orientation='PORTRAIT', $sides='ONE_SIDED', $margin=0.25, $width=8.5, $height=11, $mimeType=null, $jobTag=null){
+	function submitJob($filePath, $printerId, $orientation='PORTRAIT', $sides='ONE_SIDED', $margin=0.5, $width=8.5, $height=11, $mimeType=null, $jobTag=null){
 		$binary = file_get_contents($filePath);
 		$orientation = strtoupper($orientation);
 		$sides = strtoupper($sides);
@@ -477,10 +485,10 @@ class CIOCloudPrint {
 	//*************************************************************************
 	// Print all files queued for this printer with defaults or given settings
 	//*************************************************************************
-	function printAllFiles($id=null, $printer=null, $type=null, $orientation='PORTRAIT', $sides='ONE_SIDED', $margin=0.25, $width=8.5, $height=11, $useDisplay=false, $errors=''){
+	function printAllFiles($id=null, $printer=null, $type=null, $orientation='PORTRAIT', $sides='ONE_SIDED', $margin=0.5, $width=8.5, $height=11, $useDisplayName=false, $errors=''){
 		$printerArray = array();
 		if (!$id){
-			$printer=null; $type=null; $orientation='PORTRAIT';  $sides='ONE_SIDED';  $margin=0.25; $width=8.5; $height=11;
+			$printer=null; $type=null; $orientation='PORTRAIT';  $sides='ONE_SIDED';  $margin=0.5; $width=8.5; $height=11;
 			$printerList = $this->getPrinterList();
 			foreach ($printerList as $somePrinter)
 				$printerArray[] = $somePrinter['id'];
@@ -488,16 +496,21 @@ class CIOCloudPrint {
 		else
 			$printerArray[] = $id;
 		foreach ($printerArray as $id){
-			do{
-				$result = $this->printNextFile($id, $printer, $type, $orientation, $sides, $margin, $width, $height, $useDisplay);
-				if (!$result && $errors && strpos(strtolower($this->errorMessage), "no print job") === false)
-					echo $this->errorMessage.$errors;
-			}while ($result || strpos(strtolower($this->errorMessage), "no print job") === false);
+			$jobs = $this->getQueuedJobsList($id);
+			if (!$jobs){
+				return false;
+			}
+			foreach($jobs as $job){
+				$result = $this->printGivenJob($job, $printer, $type, $orientation, $sides, $margin, $width, $height, $useDisplayName);
+				if (!$result && strpos(strtolower($this->errorMessage), 'no print job') === false){
+					echo $this->errorMessage.$errors."\n";
+				}
+			}
 		}
-		if (strtolower(substr($this->errorMessage, 0, 31)) == "couldn't get file: no print job")
+		if (strtolower(strpos($this->errorMessage, 'no print job')) !== false )
 			return true;
 		else{
-			$this->errorMessage = "Not all files printed: ".$this->errorMessage;
+			$this->errorMessage = 'Not all files printed: '.$this->errorMessage;
 			return false;
 		}
 	}
@@ -505,104 +518,104 @@ class CIOCloudPrint {
 	//*************************************************************************
 	// Print the next queued file for the specified printer
 	//*************************************************************************
-	function printNextFile($id, $printer=null, $type=null, $orientation='PORTRAIT', $sides='ONE_SIDED', $margin=0.25, $width=8.5, $height=11, $useDisplay=false){
+	function printNextFile($id, $printer=null, $type=null, $orientation='PORTRAIT', $sides='ONE_SIDED', $margin=0.5, $width=8.5, $height=11, $useDisplayName=false){
+		$jobs = $this->getQueuedJobsList($id);
+		if ($jobs){
+			$job = $jobs[0];
+			$this->printGivenJob($job, $printer, $type, $orientation, $sides, $margin, $width, $height, $useDisplayName);
+		}
+		else{
+			$this->errorMessage = "Couldn't get file: ".$this->errorMessage;
+			return false;
+		}
+	}
+	
+	//*************************************************************************
+	// Print job for the given job data array. Get job array from getQueuedJobsList
+	// Pass results from getQueuedJobsList here one by one. Not all at once.
+	//*************************************************************************
+	private function printGivenJob($job, $printer=null, $type=null, $orientation='PORTRAIT', $sides='ONE_SIDED', $margin=0.5, $width=8.5, $height=11, $useDisplayName=false){
+		// Include CIO Printing Object
 		$dir = dirname(__FILE__).DIRECTORY_SEPARATOR.'CIOPrinting'.DIRECTORY_SEPARATOR.'CIOPrintFile.php';
 		if (!file_exists($dir)){
 			$this->errorMessage = "Cannot Print! Missing Print Object $dir";
 			return false;
 		}			
-		require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'CIOPrinting'.DIRECTORY_SEPARATOR.'CIOPrintFile.php');
-		if(!$this->login())
-			return false;
+		require_once($dir);
+		
+		$this->errorMessage = '';
+		$fileUrl = $job['fileUrl'];
+		$jobID = $job['id'];
+		$id = $job['printerid']; // printer ID
+		if ($job['orientation']) $orientation = $job['orientation'];
+		if ($job['sides']) $sides = $job['sides'];
+		if ($job['margin']) $margin = $job['margin'];
+		if ($job['width']) $width = $job['width'];
+		if ($job['height']) $height = $job['height'];
+		if (!$type && !$job['acceptType'])
+			$type = 'application/pdf';
+		else if ($job['acceptType'])
+			$type = $job['acceptType'];
+		if (!$orientation) $orientation='PORTRAIT';
+		if (!$sides) $sides='ONE_SIDED';
+		if (!$margin) $margin=0.5;
+		if (!$width) $width=8.5;
+		if (!$height) $height=11;
+		if (!$printer)
+			$printer = ($useDisplayName && substr(trim($this->getPrinterName($id)), 0, 4) == 'CIO_') ? trim($this->getPrinterDisplayName($id)) : trim($this->getPrinterName($id));
+		// Temp Filename and location
+		$tempFile = "";
+		$end = substr($job['title'], strrpos($job['title'], '.'));
+		if (!strrpos($job['title'], '.'))
+			$end = ".pdf";
+		do{
+			$tempFile = $this->rand_string(11).$end;
+		} while (file_exists(dirname(__FILE__).DIRECTORY_SEPARATOR.$tempFile));
+		$toPrint = dirname(__FILE__).DIRECTORY_SEPARATOR.$tempFile;
+		$this->client->resetParameters();
 		$this->client->setHeaders('Authorization','GoogleLogin auth='.$this->Client_Login_Token); 
 		$this->client->setHeaders('X-CloudPrint-Proxy','CIO-Technologies');
-		//GCP Services - Printer URI
-		$this->client->setUri($this->apiUri.'fetch');
-		$this->client->setParameterPost('printerid', $id);
-		$this->client->setParameterPost('xyz', $this->rand_string(5));
+		$this->client->setHeaders('Accept', $type);
+		//echo $type."\n";
+		$this->client->setHeaders('Accept-encoding', 'gzip,deflate');
+		$this->client->setUri($fileUrl);
 		$response = $this->client->request(Zend_Http_Client::POST);
-		$data = json_decode($response->getBody());
-		//print_r($data); echo "/fetch then print<br><br>"; // TODO REMOVE
-		$success = $data->success;
-		$jobID = '';
-		if ($success){
-			$job = $this->jobObjectToArray($data->jobs[0]);
-			$fileUrl = $job['fileUrl'];
-			$jobID = $job['id'];
-			if ($job['orientation']) $orientation = $job['orientation'];
-			if ($job['sides']) $sides = $job['sides'];
-			if ($job['margin']) $margin = $job['margin'];
-			if ($job['width']) $width = $job['width'];
-			if ($job['height']) $height = $job['height'];
-			if (!$type && !$job['acceptType'])
-				$type = 'application/pdf';
-			else if ($job['acceptType'])
-				$type = $job['acceptType'];
-			if (!$orientation) $orientation='PORTRAIT';
-			if (!$sides) $sides='ONE_SIDED';
-			if (!$margin) $margin=0.25;
-			if (!$width) $width=8.5;
-			if (!$height) $height=11;
-			if (!$printer)
-				$printer = ($useDisplay && substr(trim($this->getPrinterName($id)), 0, 4) == 'CIO_') ? trim($this->getPrinterDisplayName($id)) : trim($this->getPrinterName($id));
-			// Temp Filename and location
-			$tempFile = "";
-			$end = substr($job['title'], strrpos($job['title'], '.'));
-			if (!strrpos($job['title'], '.'))
-				$end = ".pdf";
-			do{
-				$tempFile = $this->rand_string(11).$end;
-			} while (file_exists(dirname(__FILE__).DIRECTORY_SEPARATOR.$tempFile));
-			$toPrint = dirname(__FILE__).DIRECTORY_SEPARATOR.$tempFile;
-			$this->client->resetParameters();
-			$this->client->setHeaders('Authorization','GoogleLogin auth='.$this->Client_Login_Token); 
-			$this->client->setHeaders('X-CloudPrint-Proxy','CIO-Technologies');
-			$this->client->setHeaders('Accept', $type);
-			//echo $type."\n";
-			$this->client->setHeaders('Accept-encoding', 'gzip,deflate');
-			$this->client->setUri($fileUrl);
-			$response = $this->client->request(Zend_Http_Client::POST);
-			// Save file
-			$fp = fopen($toPrint, 'w');
-			fwrite($fp, $response->getBody());
-			fclose($fp);
-			if ($response->isSuccessful()){
-				// Send to printer
-				$this->setJobStatus($jobID, 'IN_PROGRESS'); // Mark IN_PROGRESS
-				if($this->log_obj) $this->log_obj->write_log("Printing <$toPrint> to <$printer>");
-				$result = CIOPrintFile::printFile($toPrint, $printer, $orientation, $sides, $margin, $width, $height);
-				if ($result === false){
-					unlink($toPrint);
-					if (substr(CIOPrintFile::$errorMessage, 0, 14) == "Error: Printer")
-						$this->setJobStatus($jobID, 'QUEUED'); // Mark QUEUED
-					else
-						$this->setJobStatus($jobID, 'ERROR', 'PNF-500', CIOPrintFile::$errorMessage); // Mark ERROR
-					$this->errorMessage = "Couldn't print file: ".CIOPrintFile::$errorMessage;
-					return false;
-				}
-				else{
-					if ($result === true || strpos($result[1], $tempFile) === false){
-						$this->setJobStatus($jobID, 'DONE'); // Mark DONE
-					}
-					else{
-						$this->errorMessage = "Failed to print: ".$result[1];
-						$this->setJobStatus($jobID, 'ERROR', 'PNF-501', $result[1]); // Mark ERROR
-						return false;
-					}
-				}
-			}	
-			else{
+		// Save file
+		$fp = fopen($toPrint, 'w');
+		fwrite($fp, $response->getBody());
+		fclose($fp);
+		if ($response->isSuccessful()){
+			// Send to printer
+			$this->setJobStatus($jobID, 'IN_PROGRESS'); // Mark IN_PROGRESS
+			if($this->log_obj) $this->log_obj->write_log("Printing <$toPrint> to <$printer>");
+			$result = CIOPrintFile::printFile($toPrint, $printer, $orientation, $sides, $margin, $width, $height);
+			if ($result === false){
 				unlink($toPrint);
-				$this->errorMessage = "Found job, but could not download. Check file type. Status: ".$response->getStatus()." - ".$response->getMessage();
+				if (substr(CIOPrintFile::$errorMessage, 0, 14) == "Error: Printer")
+					$this->setJobStatus($jobID, 'QUEUED'); // Mark QUEUED
+				else
+					$this->setJobStatus($jobID, 'ERROR', 'PNF-500', CIOPrintFile::$errorMessage); // Mark ERROR
+				$this->errorMessage = "Couldn't print file: ".CIOPrintFile::$errorMessage;
 				return false;
 			}
-			unlink($toPrint);
-			return true;
-		}
+			else{
+				if ($result === true || strpos($result[1], $tempFile) === false){
+					$this->setJobStatus($jobID, 'DONE'); // Mark DONE
+				}
+				else{
+					$this->errorMessage = "Failed to print: ".$result[1];
+					$this->setJobStatus($jobID, 'ERROR', 'PNF-501', $result[1]); // Mark ERROR
+					return false;
+				}
+			}
+		}	
 		else{
-			$this->errorMessage = "Couldn't get file: ".$data->message;
+			unlink($toPrint);
+			$this->errorMessage = "Found job, but could not download. Check file type. Status: ".$response->getStatus()." - ".$response->getMessage();
 			return false;
 		}
+		unlink($toPrint);
+		return true;
 	}
 	
 	//*************************************************************************

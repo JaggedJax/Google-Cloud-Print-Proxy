@@ -9,7 +9,7 @@ Requires: Zend Framework
 Scripts looks in ./Zend/. If Zend is already in the path, remove the 'require_once'
 in the constructor of CIOCloudPrint.php and at the top of CIOCloudPrintXMPP.php
 
-Optional: XMPPPHP
+Optional: XMPPHP
 http://code.google.com/p/xmpphp/
 Used by CIOCloudPrintXMPP.php which looks for it in ./XMPPHP/. Remove the
 'require_once' at the top of the file if not needed.

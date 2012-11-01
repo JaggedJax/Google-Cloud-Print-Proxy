@@ -564,13 +564,20 @@ class CIOCloudPrint {
 		if (!$printer)
 			$printer = ($useDisplayName && substr(trim($this->getPrinterName($id)), 0, 4) == 'CIO_') ? trim($this->getPrinterDisplayName($id)) : trim($this->getPrinterName($id));
 		// Temp Filename and location
-		$tempFile = "";
-		$end = substr($job['title'], strrpos($job['title'], '.'));
-		if (!strrpos($job['title'], '.'))
-			$end = ".pdf";
-		do{
-			$tempFile = $this->rand_string(11).$end;
-		} while (file_exists(dirname(__FILE__).DIRECTORY_SEPARATOR.$tempFile));
+		$tempFile = '';
+		if (!file_exists(dirname(__FILE__).DIRECTORY_SEPARATOR.$job['title'])){
+			$tempFile = $job['title'];
+		}
+		else{
+			$end = substr($job['title'], strrpos($job['title'], '.'));
+			$name = substr($job['title'], 0, strrpos($job['title'], '.'));
+			if (strrpos($job['title'], '.') === FALSE){
+				$end = ".pdf";
+			}
+			do{
+				$tempFile = $name.'-'.$this->rand_string(3).$end;
+			} while (file_exists(dirname(__FILE__).DIRECTORY_SEPARATOR.$tempFile));
+		}
 		$toPrint = dirname(__FILE__).DIRECTORY_SEPARATOR.$tempFile;
 		$this->client->resetParameters();
 		$this->client->setHeaders('Authorization','GoogleLogin auth='.$this->Client_Login_Token); 

@@ -594,7 +594,7 @@ class CIOCloudPrint {
 		if ($response->isSuccessful()){
 			// Send to printer
 			$this->setJobStatus($jobID, 'IN_PROGRESS'); // Mark IN_PROGRESS
-			if($this->log_obj) $this->log_obj->write_log("Printing <$toPrint> to <$printer>");
+			if($this->log_obj) $this->log_obj->write_log("Printing <$toPrint> to <$printer> with Orientation <$orientation> and Sides <$sides>");
 			$result = CIOPrintFile::printFile($toPrint, $printer, $orientation, $sides, $margin, $width, $height);
 			if ($result === false){
 				unlink($toPrint);
@@ -701,7 +701,7 @@ class CIOCloudPrint {
 		$jobArray['height'] = null;
 		$jobArray['acceptType'] = null;
 		$jobArray['tag'] = null;
-		$tag = $jobObject->tags[0];
+		$tag = $jobObject->tags[1];
 		$tags = explode(',', $tag);
 		foreach ($tags as $tag){
 			$tag = trim($tag);
@@ -715,7 +715,7 @@ class CIOCloudPrint {
 				case 'j': $jobArray['tag'] = substr($tag, 2); break;
 			}
 		}
-		$jobArray['gTag'] = $jobObject->tags[1];
+		$jobArray['gTag'] = $jobObject->tags[0];
 		
 		return $jobArray;
 	}

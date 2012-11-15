@@ -22,6 +22,7 @@ import javax.print.attribute.standard.MediaPrintableArea;
 import javax.print.attribute.standard.MediaSize;
 import javax.print.attribute.standard.OrientationRequested;
 import javax.print.attribute.standard.PrinterIsAcceptingJobs;
+import javax.print.attribute.standard.PrinterState;
 import javax.print.attribute.standard.Sides;
 
 import com.sun.pdfview.PDFFile;
@@ -31,7 +32,7 @@ public class PrintFile {
 	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 1L;
 	private static ArrayList<String> m_printfile;
-	private static final String version = "10.10.11"; // MM.DD.YY - Date of last update
+	private static final String version = "11.15.12"; // MM.DD.YY - Date of last update
 
 	/**
 	 * 
@@ -48,7 +49,7 @@ public class PrintFile {
 		OrientationRequested orientation = OrientationRequested.PORTRAIT;
 		Sides sides = Sides.ONE_SIDED;
 		int numCopies = 1;
-		float margins = (float) 0.25;
+		float margins = (float) 0.5;
 		float width = (float) 8.5;
 		float height = (float) 11;
 		String printerName = null;
@@ -81,7 +82,6 @@ public class PrintFile {
 
 	public static void printLabel(String printer_name, OrientationRequested orientation, Sides sides, int numCopies, float margins, float width, float height) {
 		boolean allGood = false;
-		PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
 		
 		for (int i = 0; i < m_printfile.size(); i++) {
 			URL http;
@@ -91,6 +91,8 @@ public class PrintFile {
 			allGood = false;
 			DocFlavor myFormat = null;
 			DocAttributeSet das = null;
+			PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
+			String message = "";
 //			PrinterJob pjob = null;
 //			PDFPrintPage pages = null;
 //			PDFFile pdfFile = null;
@@ -99,7 +101,7 @@ public class PrintFile {
 			if (type.equals("png")){
 				myFormat = DocFlavor.INPUT_STREAM.PNG;
 				das = new HashDocAttributeSet();
-				das.add(new MediaPrintableArea((float)margins, (float)margins, (float)width-(2*margins), (float)height-(2*margins), MediaPrintableArea.INCH));
+				das.add(new MediaPrintableArea((float)margins, 0, (float)width-(2*margins), (float)height/*-(2*margins)*/, MediaPrintableArea.INCH));
 				aset.add(MediaSize.findMedia((float) width, (float) height, Size2DSyntax.INCH)); // Required for png format
 			}
 			else
@@ -108,21 +110,23 @@ public class PrintFile {
 			aset.add(sides);
 			aset.add(new Copies(numCopies));
 			service = PrintServiceLookup.lookupDefaultPrintService();	// Start by assuming we want default printer
-			if (printer_name == null)
+			if (service != null && (printer_name == null || printer_name.trim().equals(""))){
 				allGood = true;
+			}
 			else{
 				PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
 				for (int j = 0; j < services.length; j++) {
-					if (printer_name.equals(services[j].getName())) {
+					if (printer_name.trim().equalsIgnoreCase(services[j].getName().trim())) {
 						service = services[j];
 						allGood = true;
 					}
 				}
 			}
 			if (!allGood)
-				System.out.println("Error: Printer " + printer_name + " not available or doesn't support file type.");
-			else if (service.getAttribute(PrinterIsAcceptingJobs.class).equals(PrinterIsAcceptingJobs.NOT_ACCEPTING_JOBS)) {
-				System.out.println("Error: Printer " + service.getName() + " not accepting jobs.");
+				System.out.println("Error: Printer <" + printer_name + "> not available or doesn't support file type.");
+			else if (!service.getAttribute(PrinterIsAcceptingJobs.class).equals(PrinterIsAcceptingJobs.ACCEPTING_JOBS)) {
+				PrinterState pState = service.getAttribute(PrinterState.class);
+				System.out.println("Error: Printer <" + service.getName() + "> not accepting jobs.");
 				allGood = false;
 			}
 			if (allGood) {
@@ -135,7 +139,7 @@ public class PrintFile {
 						FileChannel fc = fis.getChannel();
 						ByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
 						PDFFile pdfFile = new PDFFile(bb);
-						NativePDFPrint.print(pdfFile, service, orientation, sides, numCopies, margins, width, height);
+						NativePDFPrint.print(pdfFile, service, orientation, sides, numCopies, margins, width, height, f.getName());
 					}
 					else{
 						http = (new File(m_printfile.get(i))).toURI().toURL();
@@ -151,8 +155,9 @@ public class PrintFile {
 				}
 			}
 		}
-		if (!allGood)
+		if (!allGood){
 			System.exit(1);
+		}
 	}
 
 }

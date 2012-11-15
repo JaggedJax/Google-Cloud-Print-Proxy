@@ -45,8 +45,10 @@ else{
 	die("Must pass login parameters");
 }
 $cp = new CIOCloudPrint($log_obj);
-if (!$cp->authenticate($G_Email, $G_Pass))
+if (!$cp->authenticate($G_Email, $G_Pass)){
+	$log_obj->write_log($cp->errorMessage);
 	die($cp->errorMessage);
+}
 
 $maxReconnects = 10;
 $numReconnects = 0;
@@ -59,16 +61,18 @@ if ($verbose){
 	$errors = "\n";	
 }
 if (stristr(PHP_OS, 'WIN')){
-	if (!$cp->printAllFiles(null, null, null, null, null, null, null, null, $useDesc, $errors)){
-		$log_obj->write_log("Printing Error: "+$cp->errorMessage);
+	if (!$cp->printAllFiles(null, null, null, null, null, null, null, null, $useDesc, $errors)
+			&& strpos($cp->errorMessage, 'No print job available')===false){
+		$log_obj->write_log("Printing Error: ".$cp->errorMessage);
 		if ($verbose) echo $cp->errorMessage;
 	}
 }
 else{
 	$pid = pcntl_fork();
 	if ($pid == 0){
-		if (!$cp->printAllFiles(null, null, null, null, null, null, null, null, $useDesc, $errors)){
-			$log_obj->write_log("Printing Error: "+$cp->errorMessage);
+		if (!$cp->printAllFiles(null, null, null, null, null, null, null, null, $useDesc, $errors)
+				&& strpos($cp->errorMessage, 'No print job available')===false){
+			$log_obj->write_log("Printing Error: ".$cp->errorMessage);
 			if ($verbose) echo $cp->errorMessage;
 		}
 		exit(0);
@@ -83,7 +87,7 @@ if (!$fh || !$gotLock){
 	//if ($verbose)
 		echo "Couldn't get lock. Quitting.";
 	fclose($fh);
-	exit(1);
+	exit(2);
 }
 $log_obj->write_log("Got lock, connecting to Google.");
 //else if ($verbose)
@@ -118,9 +122,9 @@ do{
 						{
 							// We have received a push for this Print Proxy ID + User.   
 							// Now we can /fetch print jobs for this Proxy, User, Printer ID
-							$log_obj->write_log("Print Job Notification Received for printer " . $printerID);
+							$log_obj->write_log("Notification Received for printer " . $printerID);
 							if ($verbose)
-								echo "Print Job Notification Received for printer " . $printerID . "\n";
+								echo "Notification Received for printer " . $printerID . "\n";
 							$result = $cp->printAllFiles($printerID, null, null, null, null, null, null, null, $useDesc, $errors);
 							if (!$result){
 								$log_obj->write_log("Error printing: ".$cp->errorMessage);
@@ -168,7 +172,7 @@ do{
 				}catch (Exception $e){
 					pclose(popen("start \"Cloud Print XMPP Service\" \"".dirname(__FILE__)."/".$batFile."\" " . escapeshellarg($args), "r"));
 				}
-				exit(1);
+				exit(3);
 			}
 			else{ // Unix
 				$pid = pcntl_fork();
@@ -188,7 +192,7 @@ do{
 				$fh = fopen($tempFile, 'w');
 				$gotLock = flock($fh, LOCK_EX); // Blocking lock to wait for parent.
 				if (!$fh || !$gotLock){
-					exit(1);
+					exit(4);
 				}
 			}
 		}
@@ -204,7 +208,7 @@ do{
 		$cp = new CIOCloudPrint();
 		if (!$cp->authenticate($G_Email, $G_Pass))
 			die($cp->errorMessage);
-		$conn = new XMPPHP_XMPP('talk.google.com', 5222, $G_Email."@gmail.com", $G_Pass, 'CIO-Techno', 'gmail.com', $printlog=true, $loglevel=XMPPHP_Log::LEVEL_ERROR);
+		$conn = new XMPPHP_XMPP('talk.google.com', 5222, $G_Email, $G_Pass, 'CIO-Techno', 'gmail.com', $printlog=true, $loglevel=XMPPHP_Log::LEVEL_ERROR);
 		$conn->autoSubscribe();
 		$numReconnects++;
 	}

@@ -603,6 +603,7 @@ class CIOCloudPrint {
 				else
 					$this->setJobStatus($jobID, 'ERROR', 'PNF-500', CIOPrintFile::$errorMessage); // Mark ERROR
 				$this->errorMessage = "Couldn't print file: ".CIOPrintFile::$errorMessage;
+				if($this->log_obj) $this->log_obj->write_log("Failed printing <$toPrint>: ".CIOPrintFile::$errorMessage);
 				return false;
 			}
 			else{

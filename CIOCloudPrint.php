@@ -308,6 +308,25 @@ class CIOCloudPrint {
 		}
 	}
 	
+	//*************************************************************************
+	// Delete jobs older than $age days
+	// Run this call in parallel. It could take a LONG time.
+	//*************************************************************************
+	function pruneJobs($age, $status=null){
+		if (!$age || $age < 1){
+			return false;
+		}
+		$jobs = $this->listJobs(0, null, $status);
+		$now = new DateTime('now');
+		foreach($jobs as $job){
+			$jobTime = new DateTime();
+			$jobTime->setTimestamp(substr($job['updateTime'],0,10));
+			if (date_diff($jobTime, $now)->format('%R%a') > $age){
+				$this->deleteJob($job['id']);
+			}
+		}
+	}
+	
 	/* SERVER FEATURES */
 	
 	//*************************************************************************
